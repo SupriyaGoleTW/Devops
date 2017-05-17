@@ -1,29 +1,25 @@
 ---
-- hosts: webservers
+- hosts: webserver1
+  vars_files:
+    - ./config/webserver1.yml
   tasks:
     - name: Include nodejs role
       include_role:
         name: nodejs
+      vars:
+        node_version: "{{ node_version_webserver1 }}"
 
-    - name: Installing nginx and nodejs
-      become: yes
-      yum: name=nginx state=present
-  
-    - name: run service on port
-      copy:
-        src: ./default.conf
-        dest: /etc/nginx/conf.d/default.conf        
-      become: yes
-
-    - name: restart and run nginx as a background process
-      become: yes
-      service:
+    - name: Install nginx and run as background process
+      include_role:
         name: nginx
-        state: restarted
-        enabled: yes
-
-- hosts: webservers2
+    
+- hosts: webserver2
+  vars_files:
+    - ./config/webserver2.yml
   tasks:
     - name: Include nodejs role
       include_role:
-        name: nodejs    
+        name: nodejs
+      vars:
+        node_version: "{{ node_version_webserver2 }}" 
+    
