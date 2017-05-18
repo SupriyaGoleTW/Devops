@@ -1,25 +1,13 @@
 ---
-- hosts: webserver1
+- hosts: webservers1
   vars_files:
-    - ./config/webserver1.yml
-  tasks:
-    - name: Include nodejs role
-      include_role:
-        name: nodejs
-      vars:
-        node_version: "{{ node_version_webserver1 }}"
-
-    - name: Install nginx and run as background process
-      include_role:
-        name: nginx
+    - ./configs/webservers1.yml  
+  roles:
+    - nodejs
+    - nginx
     
-- hosts: webserver2
+- hosts: webservers2
   vars_files:
-    - ./config/webserver2.yml
-  tasks:
-    - name: Include nodejs role
-      include_role:
-        name: nodejs
-      vars:
-        node_version: "{{ node_version_webserver2 }}" 
-    
+    - ./configs/webservers2.yml
+  roles:
+    - nodejs
